@@ -28,10 +28,10 @@ public class WalletRepository : IWalletRepository
         await _dbContext.SaveChangesAsync();
     }
 
-    public void AddTransaction(Transaction transaction)
+    public async Task AddTransactionAsync(Transaction transaction)
     {
         _dbContext.Transactions.Add(transaction);
-        _dbContext.SaveChanges();
+        await _dbContext.SaveChangesAsync();
     }
 
     public IEnumerable<Wallet> GetAll()

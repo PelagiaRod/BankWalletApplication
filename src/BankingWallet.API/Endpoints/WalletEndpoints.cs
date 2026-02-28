@@ -42,13 +42,13 @@ public static class WalletEndpoints
             return Results.Ok(wallets);
         });
 
-        app.MapPost("/transfer", (WalletAppService service, TransferRequest request) =>
+        app.MapPost("/transfer", async (WalletAppService service, TransferRequest request) =>
         {
             bool success = Enum.TryParse(request.Currency, out Currency currencyEnum);
 
             if (success)
             {
-                service.Transfer(request.FromWalletId, request.ToWalletId, new Money(request.Amount, currencyEnum));
+                await service.Transfer(request.FromWalletId, request.ToWalletId, new Money(request.Amount, currencyEnum));
                 return Results.Ok();
             }
             else
@@ -56,5 +56,8 @@ public static class WalletEndpoints
                 return Results.BadRequest("Invalid currency string");
             }
         });
+
+
+
     }
 }
