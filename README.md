@@ -24,6 +24,7 @@ This project demonstrates a layered architecture with **Domain**, **Application*
 
 ## Project Structure
 
+```
 BankWalletApplication/
 ├─ src/
 │  ├─ BankingWallet.API         # API project with endpoints
@@ -31,3 +32,4 @@ BankWalletApplication/
 │  ├─ BankingWallet.Domain      # Entities and domain logic
 │  └─ BankingWallet.Infrastructure # EF Core DbContext, Repositories
 └─ tests/                       # Unit and integration tests
+```
