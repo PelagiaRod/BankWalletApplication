@@ -4,6 +4,7 @@ using BankingWallet.Domain.ValueObjects;
 using BankingWallet.Application;
 using BankingWallet.Infrastructure.DependencyInjection;
 using BankingWallet.API.Endpoints;
+using BankingWallet.API.ErrorHandling;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +22,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.MapWalletEndpoints();
 

@@ -57,7 +57,5 @@ public static class WalletEndpoints
             }
         });
 
-
-
     }
 }
