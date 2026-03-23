@@ -1,5 +1,5 @@
-using BankingWallet.Application.DTOs;
-using BankingWallet.Domain.ValueObjects;
+using BankingWallet.Application.Wallet.DTOs;
+using BankingWallet.Domain.Wallet.ValueObjects;
 using FluentAssertions;
 using Xunit;
 

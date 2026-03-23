@@ -1,8 +1,5 @@
-using BankingWallet.Domain.Exceptions;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Threading.Tasks;
+using BankingWallet.Domain.Common;
+using BankingWallet.Domain.Wallet.Exceptions;
 
 namespace BankingWallet.API.ErrorHandling;
 

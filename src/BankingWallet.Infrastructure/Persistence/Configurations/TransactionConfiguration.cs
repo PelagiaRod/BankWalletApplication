@@ -1,4 +1,4 @@
-using BankingWallet.Domain.Entities;
+using BankingWallet.Domain.Wallet.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

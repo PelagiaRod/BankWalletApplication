@@ -1,7 +1,7 @@
-using BankingWallet.Domain.Entities;
-using BankingWallet.Domain.Exceptions;
-using BankingWallet.Domain.Services;
-using BankingWallet.Domain.ValueObjects;
+using BankingWallet.Domain.Wallet.Entities;
+using BankingWallet.Domain.Wallet.Exceptions;
+using BankingWallet.Domain.Wallet.Services;
+using BankingWallet.Domain.Wallet.ValueObjects;
 using FluentAssertions;
 using Xunit;
 

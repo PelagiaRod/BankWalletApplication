@@ -1,10 +1,10 @@
-using BankingWallet.API.DTOs;
-using BankingWallet.Application.DTOs;
-using BankingWallet.Application.Services;
-using BankingWallet.Domain.Entities;
-using BankingWallet.Domain.ValueObjects;
-using BankingWallet.Infrastructure.Persistence.Migrations;
+using BankingWallet.Application.Wallet.DTOs;
+using BankingWallet.Application.Wallet.Services;
+using BankingWallet.Domain.Wallet.Entities;
+using BankingWallet.Domain.Wallet.ValueObjects;
+using BankingWallet.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Builder;
 
 namespace BankingWallet.API.Endpoints;
 
@@ -12,7 +12,11 @@ public static class WalletEndpoints
 {
     public static void MapWalletEndpoints(this WebApplication app)
     {
-        app.MapPost("/wallets/fiat", async (
+        var group = app.MapGroup("/wallet")
+        .WithTags("Wallet")
+        .RequireAuthorization();
+
+        group.MapPost("/fiat", async (
             CreateWalletRequest request,
             BankingWalletDbContext db) =>
         {
@@ -36,13 +40,13 @@ public static class WalletEndpoints
             }
         });
 
-        app.MapGet("/wallets", async (BankingWalletDbContext db) =>
+        group.MapGet("/", async (BankingWalletDbContext db) =>
         {
             var wallets = await db.Wallets.ToListAsync();
             return Results.Ok(wallets);
         });
 
-        app.MapPost("/transfer", async (WalletAppService service, TransferRequest request) =>
+        group.MapPost("/transfer", async (WalletAppService service, TransferRequest request) =>
         {
             bool success = Enum.TryParse(request.Currency, out Currency currencyEnum);
 

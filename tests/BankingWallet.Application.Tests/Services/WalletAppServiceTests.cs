@@ -1,8 +1,8 @@
-using BankingWallet.Application.Interfaces;
-using BankingWallet.Application.Services;
-using BankingWallet.Domain.Entities;
-using BankingWallet.Domain.Services;
-using BankingWallet.Domain.ValueObjects;
+using BankingWallet.Application.Wallet.Interfaces;
+using BankingWallet.Application.Wallet.Services;
+using BankingWallet.Domain.Wallet.Entities;
+using BankingWallet.Domain.Wallet.Services;
+using BankingWallet.Domain.Wallet.ValueObjects;
 using FluentAssertions;
 using Xunit;
 using Moq;

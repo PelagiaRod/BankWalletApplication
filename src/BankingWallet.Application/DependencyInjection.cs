@@ -1,5 +1,5 @@
-using BankingWallet.Application.Services;
-using BankingWallet.Domain.Services;
+using BankingWallet.Application.Wallet.Services;
+using BankingWallet.Domain.Wallet.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BankingWallet.Application
