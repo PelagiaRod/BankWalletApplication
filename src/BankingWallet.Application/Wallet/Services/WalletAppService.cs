@@ -2,6 +2,7 @@ using BankingWallet.Domain.Wallet.Services;
 using BankingWallet.Domain.Wallet.ValueObjects;
 using BankingWallet.Domain.Wallet.Entities;
 using BankingWallet.Application.Wallet.Interfaces;
+using BankingWallet.Domain.Auth.Entities;
 
 namespace BankingWallet.Application.Wallet.Services;
 
@@ -16,10 +17,14 @@ public class WalletAppService
         _transferService = transferService;
     }
 
-    public async Task Transfer(Guid fromWalletId, Guid toWalletId, Money amount)
+    public async Task Transfer(Guid fromWalletId, Guid toWalletId, Money amount, string userId)
     {
         var fromWallet = _walletRepository.GetById(fromWalletId)
             ?? throw new InvalidOperationException("Source wallet not found");
+
+        if (fromWallet is null || fromWallet.UserId.ToString() != userId)
+            throw new UnauthorizedException();
+
         var toWallet = _walletRepository.GetById(toWalletId)
             ?? throw new InvalidOperationException("Target wallet not found");
 

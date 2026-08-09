@@ -1,10 +1,10 @@
+using System.Security.Claims;
 using BankingWallet.Application.Wallet.DTOs;
 using BankingWallet.Application.Wallet.Services;
 using BankingWallet.Domain.Wallet.Entities;
 using BankingWallet.Domain.Wallet.ValueObjects;
 using BankingWallet.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Builder;
 
 namespace BankingWallet.API.Endpoints;
 
@@ -18,8 +18,13 @@ public static class WalletEndpoints
 
         group.MapPost("/fiat", async (
             CreateWalletRequest request,
-            BankingWalletDbContext db) =>
+            BankingWalletDbContext db,
+            ClaimsPrincipal user) =>
         {
+            var userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId is null) return Results.Unauthorized();
+
             bool success = Enum.TryParse(request.Currency, out Currency currencyEnum);
 
             if (success)
@@ -27,6 +32,8 @@ public static class WalletEndpoints
                 var wallet = new FiatWallet(
                     Guid.NewGuid(),
                     new Money(request.Amount, currencyEnum));
+
+                wallet.SetUserId(Guid.Parse(userId));
 
                 db.Wallets.Add(wallet);
                 await db.SaveChangesAsync();
@@ -40,19 +47,32 @@ public static class WalletEndpoints
             }
         });
 
-        group.MapGet("/", async (BankingWalletDbContext db) =>
+        group.MapGet("/", async (
+            BankingWalletDbContext db,
+            ClaimsPrincipal user) =>
         {
-            var wallets = await db.Wallets.ToListAsync();
+            var userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var wallets = await db.Wallets.Where(w => w.UserId == Guid.Parse(userId!)).ToListAsync();
+
             return Results.Ok(wallets);
         });
 
-        group.MapPost("/transfer", async (WalletAppService service, TransferRequest request) =>
+        group.MapPost("/transfer", async (
+            WalletAppService service,
+            TransferRequest request,
+            ClaimsPrincipal user) =>
         {
+            var userId = user.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId is null) return Results.Unauthorized();
+
             bool success = Enum.TryParse(request.Currency, out Currency currencyEnum);
 
             if (success)
             {
-                await service.Transfer(request.FromWalletId, request.ToWalletId, new Money(request.Amount, currencyEnum));
+                await service.Transfer(request.FromWalletId, request.ToWalletId, new Money(request.Amount, currencyEnum),
+        userId);
                 return Results.Ok();
             }
             else

@@ -1,6 +1,6 @@
 using BankingWallet.Domain.Wallet.Entities;
-using BankingWallet.Domain.Wallet.EValueObjects;
-using BankingWallet.Infrastructure.Persistence.Migrations;
+using BankingWallet.Domain.Wallet.ValueObjects;
+using BankingWallet.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Data.Sqlite;
 using Xunit;

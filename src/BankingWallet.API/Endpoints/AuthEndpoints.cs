@@ -30,7 +30,8 @@ public static class AuthEndpoints
         {
             var result = await authService.RefreshToken(request.RefreshToken);
             return Results.Ok(result);
-        });
+        })
+        .AllowAnonymous();
 
         group.MapPost("/logout", async (IAuthServices authService, ClaimsPrincipal user) =>
         {

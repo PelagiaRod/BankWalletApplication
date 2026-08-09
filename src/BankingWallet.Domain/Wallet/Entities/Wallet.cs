@@ -8,6 +8,7 @@ public abstract class Wallet : Entity
 {
     public Money? Balance { get; private set; }
     public List<Transaction> Transactions { get; private set; } = new List<Transaction>();
+    public Guid UserId { get; private set; }
 
     protected Wallet(Guid id, Money initialBalance)
     : base(id)
@@ -50,6 +51,11 @@ public abstract class Wallet : Entity
     public void SetBalance(Money amount)
     {
         Balance = amount;
+    }
+
+    public void SetUserId(Guid userId)
+    {
+        UserId = userId;
     }
 }
 

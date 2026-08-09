@@ -1,3 +1,4 @@
+using BankingWallet.Domain.Auth.Entities;
 using BankingWallet.Domain.Common;
 using BankingWallet.Domain.Wallet.Exceptions;
 
@@ -39,6 +40,11 @@ public class ErrorHandlingMiddleware
         catch (InvalidTransferException ex)
         {
             context.Response.StatusCode = 404; // Not Found
+            await context.Response.WriteAsJsonAsync(new { error = ex.Message });
+        }
+        catch (UnauthorizedException ex)
+        {
+            context.Response.StatusCode = 401; // Unauthorized
             await context.Response.WriteAsJsonAsync(new { error = ex.Message });
         }
         catch (DomainException ex)

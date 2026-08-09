@@ -15,7 +15,9 @@ public class WalletAppServiceTests
     [Fact]
     public async Task Transfer_Should_CallRepositoryAndUpdateBalances()
     {
+        var userId = Guid.NewGuid();
         var fromWallet = new FiatWallet(Guid.NewGuid(), new Money(200, Currency.USD));
+        fromWallet.SetUserId(userId);
         var toWallet = new FiatWallet(Guid.NewGuid(), new Money(100, Currency.USD));
 
         var walletRepoMock = new Mock<IWalletRepository>();
@@ -24,7 +26,7 @@ public class WalletAppServiceTests
 
         var service = new WalletAppService(walletRepoMock.Object, new WalletTransferService());
 
-        await service.Transfer(fromWallet.Id, toWallet.Id, new Money(50, Currency.USD));
+        await service.Transfer(fromWallet.Id, toWallet.Id, new Money(50, Currency.USD), userId.ToString());
 
         fromWallet.Balance.Should().BeEquivalentTo(new Money(150, Currency.USD));
         toWallet.Balance.Should().BeEquivalentTo(new Money(150, Currency.USD));

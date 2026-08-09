@@ -30,6 +30,10 @@ public class AuthService : IAuthServices
         var user = new User(request.Email, hashedPassword, request.FullName);
         await _userRepository.AddAsync(user);
         var token = _jwtTokenService.GenerateToken(user);
+
+        var refreshToken = new RefreshToken(token.RefreshToken, user.Id, DateTime.UtcNow.AddDays(7));
+        await _refreshTokenRepository.AddAsync(refreshToken);
+
         return new AuthResponse(token.AccessToken, token.RefreshToken, token.ExpiresAt);
     }
 
@@ -40,6 +44,10 @@ public class AuthService : IAuthServices
             throw new UnauthorizedException();
 
         var token = _jwtTokenService.GenerateToken(user);
+
+        var refreshToken = new RefreshToken(token.RefreshToken, user.Id, DateTime.UtcNow.AddDays(7));
+        await _refreshTokenRepository.AddAsync(refreshToken);
+
         return new AuthResponse(token.AccessToken, token.RefreshToken, token.ExpiresAt);
     }
 
